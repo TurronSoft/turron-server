@@ -1,0 +1,15 @@
+type Example {
+  id: ID
+  mensaje: String
+}
+input InputExample {
+  id: ID
+  mensaje: String
+}
+scalar JSON
+type Query {
+  obtenerAvisos: [Example]
+}
+type Mutation {
+  crearAviso(input: InputExample): Example
+}

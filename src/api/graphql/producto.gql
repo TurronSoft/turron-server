@@ -1,0 +1,20 @@
+type Producto {
+  titulo: String
+  descripcion: String
+  portada: String
+  precio: Int
+  images: [String]
+}
+input ProductoInput {
+  titulo: String
+  descripcion: String
+  portada: String
+  precio: Int
+  images: String
+}
+type Query {
+  obtenerProductos(limit: Int, offset: Int): [Producto]
+}
+type Mutation {
+  crearProducto(input: ProductoInput): Producto
+}
