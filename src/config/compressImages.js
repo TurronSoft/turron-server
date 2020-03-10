@@ -36,9 +36,9 @@ export default (files, nuevaUrl) => {
           nuevaUrl(data);
         });
 
-        /*fs.unlinkSync(
+        fs.unlinkSync(
           `${process.cwd()}\\src\\public\\uploads\\${file.filename}`
-        );*/
+        );
       }
     );
   });
