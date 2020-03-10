@@ -1,22 +1,35 @@
-import express from "express";
-import { ApolloServer } from "apollo-server-express";
-import { resolvers } from "./src/resources/resolvers";
-import { typeDefs } from "./src/resources/schemas";
-require("dotenv").config();
-require("./src/config/db");
-const app = express();
-const numeroPuerto = 9000;
+import fs from 'fs'
+import multer from './src/config/multer'
+import cloudinary from './src/config/cloudinary'
+import server from './src/config/apolloServer'
+import app from './src/config/app'
 
-app.get("/", (req, res) => {
-  res.send("Plantilla del servidor");
-});
+require('dotenv').config()
+require('./src/config/db')
 
-const server = new ApolloServer({ typeDefs, resolvers });
-server.applyMiddleware({ app });
+app.post('/upload-images', multer.array('image', 10), async (req, res) => {
+  const uploader = async path => await cloudinary.uploads(path, 'prueba_nodejs')
+  if (req.method === 'POST') {
+    const urls = []
+    const files = req.files
+    for (const file of files) {
+      const { path } = file
+      const newPath = await uploader(path)
+      urls.push(newPath)
+      fs.unlinkSync(path)
+    }
 
-app.listen(numeroPuerto, () => {
-  console.log(`server: http://localhost:${numeroPuerto}`);
-  console.log(
-    `Apollo Server: http://localhost:${numeroPuerto}${server.graphqlPath}`
-  );
-});
+    res.status(200).json({
+      message: 'images uploaded successfully',
+      data: urls,
+    })
+  } else {
+    res.status(405).json({
+      err: `${req.method} method not allowed`,
+    })
+  }
+})
+
+app.listen(process.env.PORT, () => {
+  console.log(`server: http://localhost:${process.env.PORT}`)
+})
