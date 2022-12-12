@@ -23,7 +23,7 @@
     "compress-images": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "graphql": "^14.5.8",
     "graphql-import": "^0.7.1",
     "merge-graphql-schemas": "^1.7.3",
